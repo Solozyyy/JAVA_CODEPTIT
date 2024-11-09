@@ -1,0 +1,52 @@
+package btap;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import static java.lang.Math.sqrt;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
+
+public class bai3 {
+
+    public static boolean[] num = new boolean[1000001];
+
+    public static void InitNto() {
+        for (int i = 2; i <= 1000000; ++i) {
+            num[i] = true;
+        }
+        num[0] = num[1] = false;
+        for (int p = 2; p * p <= 1000000; ++p) {
+            if (num[p]) {
+                for (int i = p * p; i <= 1000000; i += p) {
+                    num[i] = false;
+                }
+            }
+        }
+    }
+
+    public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException {
+        ObjectInputStream ois1 = new ObjectInputStream(new FileInputStream("DATA1.in"));
+        ArrayList<Integer> ls1 = (ArrayList<Integer>) ois1.readObject();
+        ObjectInputStream ois2 = new ObjectInputStream(new FileInputStream("DATA2.in"));
+        ArrayList<Integer> ls2 = (ArrayList<Integer>) ois2.readObject();
+        InitNto();
+        Set<Integer> se1 = new TreeSet<>(ls1);
+        Set<Integer> se2 = new TreeSet<>(ls2);
+        for (Integer n : se1) {
+            int m = 1000000 - n;
+            if (n < m && num[n] && num[m] && se2.contains(m)) {
+                System.out.println(n + " " + m);
+            }
+
+        }
+    }
+}
