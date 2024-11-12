@@ -1,0 +1,50 @@
+package btap;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import static java.lang.Math.sqrt;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
+
+public class bai3 {
+
+    public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException {
+        ObjectInputStream ois = new ObjectInputStream(new FileInputStream("NHIPHAN.in"));
+        ArrayList<String> ls = (ArrayList<String>) ois.readObject();
+        Set<String> se1 = new LinkedHashSet<>();
+
+        for (String x : ls) {
+            String[] line = x.split("\\s+");
+            for (String it : line) {
+                se1.add(it.toLowerCase());
+            }
+        }
+        Scanner sc = new Scanner(new File("VANBAN.in"));
+        ArrayList<String> ls2 = new ArrayList<>();
+        while (sc.hasNext()) {
+            String token = sc.next();
+            if (!token.isEmpty()) {
+                ls2.add(token.toLowerCase());
+            }
+        }
+        Set<String> se2 = new LinkedHashSet<>(ls2);
+        for (String x : se2) {
+            if (se1.contains(x)) {
+                System.out.println(x);
+            }
+        }
+    }
+}
