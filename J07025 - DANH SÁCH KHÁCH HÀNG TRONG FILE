@@ -1,0 +1,74 @@
+package lam;
+
+import java.util.*;
+import java.math.BigInteger;
+import java.io.*;
+import java.nio.*;
+
+class KH implements Comparable<KH>{
+
+    String id, ten, gt, ns, dc;
+
+    private String Ten(String s) {
+        String[] tokens = s.split("\\s+");
+        StringBuilder sb = new StringBuilder();
+        for (String token : tokens) {
+            if (!token.isEmpty()) {
+                sb.append(Character.toUpperCase(token.charAt(0)) + token.substring(1).toLowerCase() + " ");
+            }
+        }
+        return sb.toString().trim();
+    }
+
+    private String Ngay(String s) {
+        StringBuilder sb = new StringBuilder(s);
+        if (sb.charAt(1) == '/') {
+            sb.insert(0, "0");
+        }
+        if (sb.charAt(4) == '/') {
+            sb.insert(3, "0");
+        }
+        return sb.toString().trim();
+    }
+
+    public KH(int id, String ten, String gt, String ns, String dc) {
+        this.id = String.format("KH%03d", id);
+        this.ten = Ten(ten);
+        this.gt = gt;
+        this.ns = Ngay(ns);
+        this.dc = dc;
+    }
+    
+    public int compareTo(KH k){
+        int cmpY = ns.substring(6).compareTo(k.ns.substring(6));
+        if(cmpY != 0) return cmpY;
+        
+        int cmpM = ns.substring(3, 5).compareTo(k.ns.substring(3,5));
+        if(cmpM != 0) return cmpM;
+        
+        return ns.substring(0, 2).compareTo(k.ns.substring(0, 2));
+    }
+    
+    public String toString(){
+        return id + " " + ten + " " + gt + " " + dc + " " + ns;
+    }
+    
+}
+
+public class solve {
+
+    public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException {
+        Scanner sc = new Scanner(new File("KHACHHANG.in"));
+        int tc = Integer.parseInt(sc.nextLine());
+        ArrayList<KH> ls = new ArrayList<>();
+        for(int i = 1; i <= tc; ++i){
+            ls.add(new KH(i, sc.nextLine(), sc.nextLine(), sc.nextLine(), sc.nextLine()));
+        }
+        
+        Collections.sort(ls);
+        
+        for(KH x : ls){
+            System.out.println(x);
+        }
+    }
+}
