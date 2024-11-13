@@ -1,0 +1,63 @@
+package lam;
+
+import java.util.*;
+import java.math.BigInteger;
+import java.io.*;
+import java.nio.*;
+
+class CT {
+
+    String id, ngay, gio, phong;
+
+    public CT(int id, String ngay, String gio, String phong) {
+        this.id = String.format("C%03d", id);
+        this.ngay = ngay;
+        this.gio = gio;
+        this.phong = phong;
+    }
+
+    public String toString() {
+        return this.id + " " + this.ngay + " " + this.gio + " " + this.phong;
+    }
+
+}
+
+public class solve {
+
+    public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException {
+        Scanner sc = new Scanner(new File("CATHI.in"));
+        int tc = Integer.parseInt(sc.nextLine());
+        ArrayList<CT> ls = new ArrayList<>();
+        for (int i = 1; i <= tc; ++i) {
+            ls.add(new CT(i, sc.nextLine(), sc.nextLine(), sc.nextLine()));
+        }
+
+        Comparator<CT> cmp = new Comparator<CT>() {
+            public int compare(CT o1, CT o2) {
+                int cmpY = o1.ngay.substring(6).compareTo(o2.ngay.substring(6));
+                if (cmpY != 0) {
+                    return cmpY;
+                }
+
+                int cmpM = o1.ngay.substring(3, 5).compareTo(o2.ngay.substring(3, 5));
+                if (cmpM != 0) {
+                    return cmpM;
+                }
+
+                int cmpD = o1.ngay.substring(0, 2).compareTo(o2.ngay.substring(0, 2));
+                if (cmpD != 0) {
+                    return cmpD;
+                }
+
+                return o1.gio.compareTo(o2.gio);
+
+            }
+        };
+
+        Collections.sort(ls, cmp);
+        
+        for(CT x : ls){
+            System.out.println(x);
+        }
+    }
+}
