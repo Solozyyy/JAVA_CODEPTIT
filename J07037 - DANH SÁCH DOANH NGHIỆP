@@ -1,0 +1,52 @@
+package btap;
+
+import java.io.BufferedReader;
+import java.io.*;
+import java.io.FileReader;
+import java.util.*;
+import static java.lang.Math.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.*;
+
+class DN{
+    private String id, ten, sv;
+    
+    public DN(String id, String ten, String sv){
+        this.id = id;
+        this.ten = ten;
+        this.sv = sv;
+    }
+    
+    public String getID(){
+        return this.id;
+    }
+    
+    public String toString(){
+        return this.id + " " + this.ten + " " + this.sv;
+    }
+}
+
+public class lambtap {
+
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
+        Scanner sc = new Scanner(new File("DN.in"));
+        int tc = Integer.parseInt(sc.nextLine());
+        ArrayList<DN> dn = new ArrayList<>();
+        while(tc-->0){
+            String id = sc.nextLine();
+            String ten = sc.nextLine();
+            String tcc = sc.nextLine();
+            DN p = new DN(id, ten, tcc);
+            dn.add(p);
+        }
+        Comparator<DN> cmp = new Comparator<DN>(){
+            public int compare(DN m1, DN m2){
+                return m1.getID().compareTo(m2.getID());
+            }
+        };
+        Collections.sort(dn, cmp);
+        for(DN x : dn){
+            System.out.println(x);
+        }
+    }
+}
