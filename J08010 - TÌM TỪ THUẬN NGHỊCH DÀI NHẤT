@@ -1,0 +1,50 @@
+package btap;
+
+import java.io.BufferedReader;
+import java.io.*;
+import java.io.FileReader;
+import java.util.*;
+import static java.lang.Math.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+
+public class lambtap {
+
+    public static boolean check(String s){
+        int l=0, r=s.length()-1;
+        while(l<r){
+            if(s.charAt(l)!=s.charAt(r)) return false;
+            l++; r--;
+        }
+        return true;
+    }
+    public static void main(String[] args){
+        Scanner sc=new Scanner(System.in);
+        Map<String,Integer> mp=new LinkedHashMap<>();
+        int mx=0;
+        while(sc.hasNext()){
+            String s=sc.next();
+            if(check(s)){
+                mx=max(mx,s.length());
+                if(mp.containsKey(s)){
+                    int ts=mp.get(s);
+                    ts++;
+                    mp.put(s,ts);
+                }
+                else{
+                    mp.put(s,1);
+                }
+            }
+        }
+        for(String s:mp.keySet()){
+            if(s.length()==mx){
+                System.out.println(s+" "+mp.get(s));
+            }
+        }
+    }
+}
