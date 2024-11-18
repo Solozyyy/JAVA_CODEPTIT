@@ -1,0 +1,76 @@
+package btapjava;
+
+import java.util.Scanner;
+import static java.lang.Math.*;
+import java.math.BigInteger;
+import java.util.*;
+
+class pair {
+
+    private int fi, se;
+
+    public pair() {
+    }
+
+    public pair(int fi, int se) {
+        this.fi = fi;
+        this.se = se;
+    }
+
+    public int getFi() {
+        return this.fi;
+    }
+
+    public void setFi(int fi) {
+        this.fi = fi;
+    }
+
+    public int getSe() {
+        return this.se;
+    }
+
+    public void setSe(int se) {
+        this.se = se;
+    }
+
+}
+
+public class Btapjava {
+
+    public static int find(int s, int t) {
+        Queue<pair> q = new LinkedList<>();
+        TreeSet<Integer> ts = new TreeSet<>();
+        q.add(new pair(s, 0));
+        ts.add(s);
+        while (!q.isEmpty()) {
+            pair top = q.poll();
+            //System.out.println(top.getFi() + " " + top.getSe());
+            if (top.getFi() == t) {
+                return top.getSe();
+            }
+            if (top.getFi() * 2 == t || top.getFi() - 1 == t) {
+                return top.getSe() + 1;
+            }
+            if (!ts.contains(top.getFi() * 2) && top.getFi() < t) {
+                q.add(new pair(top.getFi() * 2, top.getSe() + 1));
+                ts.add(top.getFi() * 2);
+            }
+            if (!ts.contains(top.getFi() - 1) && top.getFi() >= 1) {
+                q.add(new pair(top.getFi() - 1, top.getSe() + 1));
+                ts.add(top.getFi() - 1);
+            }
+        }
+        return 0;
+    }
+
+    public static void main(String[] args) throws Exception {
+        Scanner sc = new Scanner(System.in);
+        int tc = sc.nextInt();
+
+        while (tc-- > 0) {
+            int s = sc.nextInt();
+            int t = sc.nextInt();
+            System.out.println(find(s, t));
+        }
+    }
+}
