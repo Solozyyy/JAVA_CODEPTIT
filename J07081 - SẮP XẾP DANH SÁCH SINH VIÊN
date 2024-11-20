@@ -1,0 +1,76 @@
+package lam;
+
+import java.util.*;
+import java.math.BigInteger;
+import java.io.*;
+import java.nio.*;
+
+class MH implements Comparable<MH> {
+
+    String id, ten, sdt, email;
+    
+    public MH(String id, String ten, String sdt, String email) {
+        this.id = id;
+        this.ten = ten;
+        this.sdt = sdt;
+        this.email = email;
+    }
+
+    public String toString() {
+        return id + " " + ten + " " + sdt + " " + email;
+    }
+
+    private String getTen() {
+        String[] parts = ten.trim().split("\\s+");
+        return parts[parts.length - 1];
+    }
+
+    private String getHo() {
+        String[] parts = ten.trim().split("\\s+");
+        return parts[0];
+    }
+
+    private String getTenDem() {
+        String[] parts = ten.trim().split("\\s+");
+        if (parts.length <= 2) return ""; 
+        StringBuilder tenDem = new StringBuilder();
+        for (int i = 1; i < parts.length - 1; i++) {
+            tenDem.append(parts[i]).append(" ");
+        }
+        return tenDem.toString().trim();
+    }
+
+    @Override
+    public int compareTo(MH other) {
+
+        int cmpTen = this.getTen().compareTo(other.getTen());
+        if (cmpTen != 0) return cmpTen;
+
+        int cmpHo = this.getHo().compareTo(other.getHo());
+        if (cmpHo != 0) return cmpHo;
+
+        int cmpTenDem = this.getTenDem().compareTo(other.getTenDem());
+        if (cmpTenDem != 0) return cmpTenDem;
+
+        return this.id.compareTo(other.id);
+    }
+}
+
+public class solve {
+
+    public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException {
+        Scanner sc = new Scanner(new File("SINHVIEN.in"));
+        //Scanner sc = new Scanner("D:\\btap\\src\\lam\\text");
+        ArrayList<MH> ls = new ArrayList<>();
+        int tc = Integer.parseInt(sc.nextLine());
+        while (tc-- > 0) {
+            ls.add(new MH(sc.nextLine(), sc.nextLine(), sc.nextLine(), sc.nextLine()));
+        }
+
+        Collections.sort(ls);
+
+        for (MH x : ls) {
+            System.out.println(x);
+        }
+    }
+}
