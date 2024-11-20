@@ -1,0 +1,54 @@
+package lam;
+
+import java.util.*;
+import java.math.BigInteger;
+import java.io.*;
+import java.nio.*;
+
+class MH implements Comparable<MH> {
+
+    String id, ten, day, th;
+    int tc; 
+    
+    public MH(String id, String ten, int tc, String day, String th) {
+        this.id = id;
+        this.ten = ten;
+        this.tc = tc;
+        this.day = day;
+        this.th = th;
+    }
+
+    public String toString() {
+        return id + " " + ten + " " + tc + " " + day + " " + th;
+    }
+
+    public int compareTo(MH other) {
+        return id.compareTo(other.id);
+    }
+}
+
+public class solve {
+
+    public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException {
+        Scanner sc = new Scanner(new File("MONHOC.in"));
+        //Scanner sc = new Scanner("D:\\btap\\src\\lam\\text");
+        ArrayList<MH> ls = new ArrayList<>();
+        int tc = Integer.parseInt(sc.nextLine());
+        while (tc-- > 0) {
+            String id = sc.nextLine();
+            String ten = sc.nextLine();
+            int t = Integer.parseInt(sc.nextLine());
+            String day = sc.nextLine();
+            String th = sc.nextLine();
+            ls.add(new MH(id, ten, t, day, th));
+        }
+
+        Collections.sort(ls);
+
+        for (MH x : ls) {
+            if (!x.th.equals("Truc tiep")) {
+                System.out.println(x);
+            }
+        }
+    }
+}
