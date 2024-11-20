@@ -1,0 +1,53 @@
+package lam;
+
+import java.util.*;
+import java.math.BigInteger;
+import java.io.*;
+import java.nio.*;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+class MH implements Comparable<MH> {
+
+    String ten;
+    LocalDateTime bd, kt;
+    long tong;
+    
+    public MH(String ten, String bd, String kt) {
+        this.ten = ten;
+        DateTimeFormatter form = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        this.bd = LocalDateTime.parse(bd.trim(),form);
+        this.kt = LocalDateTime.parse(kt.trim(), form);
+        this.tong = Duration.between(this.bd, this.kt).toMinutes();
+    }
+
+    public String toString() {
+        return ten + " " + tong;
+    }
+
+    public int compareTo(MH other) {
+        int cmpT = Long.compare(other.tong, tong);
+        if(cmpT != 0) return cmpT;
+        return ten.compareTo(other.ten);
+    }
+}
+
+public class solve {
+
+    public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException {
+        Scanner sc = new Scanner(new File("ONLINE.in"));
+        //Scanner sc = new Scanner(new File("D:\\btap\\src\\lam\\text"));
+        ArrayList<MH> ls = new ArrayList<>();
+        int tc = Integer.parseInt(sc.nextLine());
+        while (tc-- > 0) {
+            ls.add(new MH(sc.nextLine(), sc.nextLine(), sc.nextLine()));
+        }
+
+        Collections.sort(ls);
+
+        for (MH x : ls) {
+            System.out.println(x);
+        }
+    }
+}
