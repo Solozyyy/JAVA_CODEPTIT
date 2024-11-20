@@ -1,0 +1,94 @@
+package lam;
+
+import java.util.*;
+import java.math.BigInteger;
+import java.io.*;
+import java.nio.*;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+class SP {
+
+    String id, ten;
+    int gia, baoHanh;
+
+    public SP(String id, String ten, int gia, int baoHanh) {
+        this.id = id;
+        this.ten = ten;
+        this.gia = gia;
+        this.baoHanh = baoHanh;
+    }
+}
+
+class KH implements Comparable<KH> {
+
+    String id, ten, dc, maSp;
+    int SL, tong;
+    LocalDate ngayMua, ngayHet;
+
+    public KH(int id, String ten, String dc, String maSp, int sl, String ngay, int gia, int them) {
+        this.id = String.format("KH%02d", id);
+        this.ten = ten;
+        this.dc = dc;
+        this.maSp = maSp;
+        this.SL = sl;
+        DateTimeFormatter form = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        ngayMua = LocalDate.parse(ngay, form);
+        ngayHet = ngayMua.plusMonths(them);
+        tong = sl * gia;
+    }
+
+    public String toString() {
+        DateTimeFormatter form = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return id + " " + ten + " " + dc + " " + maSp + " " + tong + " " + ngayHet.format(form);
+    }
+
+    public int compareTo(KH o) {
+        if (!ngayHet.equals(o.ngayHet)) {
+            return ngayHet.compareTo(o.ngayHet);
+        }
+        return id.compareTo(o.id);
+    }
+
+}
+
+public class solve {
+
+    public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException {
+        Scanner sc = new Scanner(new File("MUAHANG.in"));
+        //Scanner sc = new Scanner(new File("D:\\btap\\src\\lam\\text"));
+        ArrayList<SP> ls = new ArrayList<>();
+        int tc = Integer.parseInt(sc.nextLine());
+        while (tc-- > 0) {
+            ls.add(new SP(sc.nextLine(), sc.nextLine(), Integer.parseInt(sc.nextLine()), Integer.parseInt(sc.nextLine())));
+        }
+
+        int t = Integer.parseInt(sc.nextLine());
+        ArrayList<KH> ls2 = new ArrayList<>();
+        for(int i = 1; i <= t; ++i) {
+            String ten = sc.nextLine();
+            String dc = sc.nextLine();
+            String maSp = sc.nextLine();
+            int sl = Integer.parseInt(sc.nextLine());
+            String ngay = sc.nextLine();
+            int gia = 0;
+            int them = 0;
+            for(SP x : ls){
+                if(maSp.equals(x.id)){
+                    gia = x.gia;
+                    them = x.baoHanh;
+                    break;
+                }
+            }
+            ls2.add(new KH(i, ten, dc, maSp, sl, ngay, gia, them));
+        }
+        
+        Collections.sort(ls2);
+        
+        for(KH x : ls2){
+            System.out.println(x);
+        }
+    }
+}
