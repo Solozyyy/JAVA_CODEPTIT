@@ -1,0 +1,78 @@
+
+package btap;
+
+import java.io.BufferedReader;
+import java.io.*;
+import java.io.FileReader;
+import java.util.*;
+import static java.lang.Math.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.*;
+
+class Pair <T, E>{
+    private T fi;
+    private E se;
+    
+    public Pair(){}
+    
+    public Pair(T fi, E se){
+        this.fi = fi;
+        this.se = se;
+    }
+    
+    public boolean nto(Integer n){
+        if(n < 2) return false;
+        for(int i = 2; i <= sqrt(n); ++i){
+            if(n%i==0) return false;
+        }
+        return true;
+    }
+    
+    public boolean isPrime(){
+        if(nto((Integer) this.fi) && nto((Integer) this.se)) return true;
+        return false;
+    }
+    
+    public String toString(){
+        return this.fi + " " + this.se;
+    }
+    
+}
+
+public class lambtap {
+    
+    public static void main(String[] args) throws IOException {
+        Scanner sc = new Scanner(new File("DATA.in"));
+        int t = sc.nextInt();
+        while(t-->0){
+            int n = sc.nextInt();
+            boolean check = false;
+            for(int i = 2; i <= 2*Math.sqrt(n); i++){
+                Pair<Integer, Integer> p = new Pair<>(i, n-i);
+                if(p.isPrime()){
+                    System.out.println(p);
+                    check = true;
+                    break; 
+                }
+            }
+            if(!check) System.out.println(-1);
+        }
+    }
+    public static void main9153583(String[] args) throws IOException {
+        Scanner sc = new Scanner(new File("DATA.in"));
+        int t = sc.nextInt();
+        while(t-->0){
+            int n = sc.nextInt();
+            boolean check = false;
+            for(int i = 2; i <= 2*Math.sqrt(n); i++){
+                Pair<Integer, Integer> p = new Pair<>(i, n-i);
+                if(p.isPrime()){
+                    System.out.println(p);
+                    check = true;
+                    break; 
+                }
+            }
+            if(!check) System.out.println(-1);
+        }
+    }
+}
