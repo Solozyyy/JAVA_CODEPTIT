@@ -1,0 +1,33 @@
+package btap;
+
+import java.io.BufferedReader;
+import java.io.*;
+import java.io.FileReader;
+import java.util.*;
+import static java.lang.Math.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.*;
+
+public class lambtap {
+
+    public static void main(String[] args) throws IOException {
+        Scanner sc = new Scanner(new File("DATA.in"));
+        ArrayList<String> a = new ArrayList<>();
+        while (sc.hasNextLine()) {
+            String s = sc.nextLine().trim();
+            String[] tmp = s.split("\\s+");
+            for (String x : tmp) {
+                try {
+                    Integer.parseInt(x);
+                }
+                catch(Exception e){
+                    a.add(x);
+                }
+            }
+        }
+        Collections.sort(a);
+        for(String x : a) {
+            System.out.print(x + " ");
+        }
+    }
+}
