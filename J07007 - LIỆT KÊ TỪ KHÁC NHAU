@@ -1,0 +1,38 @@
+package btap;
+
+import java.io.BufferedReader;
+import java.io.*;
+import java.io.FileReader;
+import java.util.*;
+import static java.lang.Math.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.*;
+
+public class lambtap {
+
+    public static void main(String[] args) throws Exception {
+        String fileName = "VANBAN.in";
+        File f = new File("D:\\btapjava\\btapjava\\src\\btap\\" + fileName);
+        TreeSet<String> t = new TreeSet<>();
+        try(BufferedReader br = new BufferedReader(new FileReader(fileName))) {        
+        //try {
+            //BufferedReader br = Files.newBufferedReader(f.toPath(), StandardCharsets.UTF_8);
+            while (true) {
+                String line = br.readLine();
+                if (line != null) {
+                    String[] s = line.split("\\s+");
+                    for(String x : s){
+                        t.add(x.toLowerCase());
+                    }
+                } else {
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Deo co file");
+        }
+        for(String x : t){
+            System.out.println(x);
+        }
+    }
+}
