@@ -1,0 +1,76 @@
+package lam;
+
+import java.util.*;
+import java.math.BigInteger;
+import java.io.*;
+import java.nio.*;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+class Point{
+    double x, y;
+    
+    Point(double x, double y){
+        this.x = x;
+        this.y = y;
+    }
+    
+    public double To(Point p){
+        return Math.sqrt(Math.pow(this.x - p.x, 2) + Math.pow(this.y - p.y, 2));
+    } 
+}
+
+class Triangle{
+    double ab, ac, bc;
+    
+    Triangle(Point a, Point b, Point c){
+        ab = a.To(b);
+        ac = a.To(c);
+        bc = b.To(c);
+    }
+    
+    public double Area(){
+        double p = (ab + ac + bc) / 2;
+        return Math.sqrt(p*(p-ab)*(p-ac)*(p-bc));
+    }
+}
+
+class Polygon{
+    Point[] points;
+    int n_ver;
+    
+    public Polygon(Scanner sc){
+        n_ver = sc.nextInt();
+        this.points = new Point[n_ver];
+        for(int i = 0; i < n_ver; ++i){
+            this.points[i] = new Point(sc.nextDouble(), sc.nextDouble());
+        }
+    }
+    
+    public double getArea(){
+        double area = 0;
+        for(int i = 0; i < n_ver - 1; ++i){
+            Triangle t = new Triangle(points[0], points[i], points[i + 1]);
+            area += t.Area();
+        }
+        return area;
+    }
+    
+    public String toString(){
+        return String.format("%.3f", this.getArea());
+    }
+}
+
+public class solve {
+
+    public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException {
+        Scanner sc = new Scanner(System.in);
+        int tc = sc.nextInt();
+        while(tc-->0){
+            Polygon p = new Polygon(sc);
+            System.out.println(p);
+        }
+    }
+}
