@@ -1,0 +1,57 @@
+package lam;
+
+import java.util.*;
+import java.math.BigInteger;
+import java.io.*;
+import java.nio.*;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+
+public class solve {
+
+    public static int tc;
+
+    public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException {
+        //Scanner sc = new Scanner(new File("DATA.in"));
+        Scanner sc = new Scanner(System.in);
+        tc = sc.nextInt();
+        while (tc-- > 0) {
+            Stack<Integer> st = new Stack<>();
+            int n = sc.nextInt();
+            int[] a = new int[n];
+            for (int i = 0; i < n; ++i) {
+                a[i] = sc.nextInt();
+            }
+            int i = 0;
+            long ans = 0;
+            while (i < n) {
+                if (st.isEmpty() || a[i] >= a[st.peek()]) {
+                    st.push(i);
+                    ++i;
+                } else {
+                    int idx = st.pop();
+                    if (st.isEmpty()) {
+                        ans = Math.max(ans, (long)i * a[idx]);
+                    } else {
+                        ans = Math.max(ans, (long)a[idx] * (i - st.peek() - 1));
+                    }
+                }
+            }
+            while (!st.empty()) {
+                int idx = st.pop();
+                if (st.empty()) {
+                    ans = Math.max(ans, i * a[idx]);
+                } else {
+                    ans = Math.max(ans, a[idx] * (i - st.peek() - 1));
+                }
+            }
+
+            System.out.println(ans);
+
+        }
+    }
+}
