@@ -1,0 +1,99 @@
+package lam;
+
+import java.util.*;
+import java.math.BigInteger;
+import java.io.*;
+import java.nio.*;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+
+class KH {
+
+    String id, ten, gt, ns, dc;
+    
+    KH(int id, String ten, String gt, String ns, String dc){
+        this.id = String.format("KH%03d", id);
+        this.ten = ten;
+        this.gt = gt;
+        this.ns = ns;
+        this.dc = dc;
+    }
+
+}
+
+class MH {
+
+    String id, ten, dv;
+    int mua, ban;
+    
+    MH(int id, String ten, String dv, int mua, int ban){
+        this.id = String.format("MH%03d", id);
+        this.ten = ten;
+        this.dv = dv;
+        this.mua = mua;
+        this.ban = ban;
+    }
+    
+}
+
+class HD{
+    String id, mkh, mmh;
+    int sl, tong;
+    MH mh;
+    KH kh;
+    
+    HD(int id, KH kh, MH mh, int sl){
+        this.id = String.format("HD%03d", id);
+        this.mh = mh;
+        this.kh = kh;
+        this.sl = sl;
+        this.tong = mh.ban * sl;
+    }
+    
+    public String toString(){
+        return id + " " + kh.ten + " " + kh.dc + " " + mh.ten + " " + mh.dv + " " + mh.mua + " " + mh.ban + " " + sl + " " + tong;
+    }
+}
+
+public class solve {
+
+    public static int tc;
+    public static Scanner sc;
+
+    public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException {
+        
+        sc = new Scanner(new File("KH.in"));
+        tc = Integer.parseInt(sc.nextLine());
+        Map<String, KH> m1 = new LinkedHashMap<>();
+        ArrayList<HD> ls = new ArrayList<>();
+        Map<String, MH> m2 = new LinkedHashMap<>();
+        for(int i = 1; i <= tc; ++i) {
+            KH kh = new KH(i, sc.nextLine(), sc.nextLine(), sc.nextLine(), sc.nextLine());
+            m1.put(kh.id, kh);
+        }
+        
+        sc = new Scanner(new File("MH.in"));
+        tc = Integer.parseInt(sc.nextLine());
+        for (int i = 1; i <= tc; ++i) {
+            MH mh = new MH(i, sc.nextLine(), sc.nextLine(), Integer.parseInt(sc.nextLine()), Integer.parseInt(sc.nextLine()));
+            m2.put(mh.id, mh);
+        }
+        
+        sc = new Scanner(new File("HD.in"));
+        tc = Integer.parseInt(sc.nextLine());
+        for(int i = 1; i <= tc; ++i){
+            String[] line = sc.nextLine().split("\\s+");
+            KH kh = m1.get(line[0]);
+            MH mh = m2.get(line[1]);
+            ls.add(new HD(i, kh, mh, Integer.parseInt(line[2])));
+        }
+        
+        for(HD x : ls){
+            System.out.println(x);
+        }
+    }
+}
