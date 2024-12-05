@@ -1,0 +1,109 @@
+package lam;
+
+import java.util.*;
+import java.math.BigInteger;
+import java.io.*;
+import java.nio.*;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+
+class Phong {
+
+    String kyHieu, ten;
+    int gia;
+    float phi;
+
+    Phong(String sign, String name, int price, float fee) {
+        this.kyHieu = sign;
+        this.ten = name;
+        this.gia = price;
+        this.phi = fee;
+    }
+
+}
+
+class KH implements Comparable<KH> {
+
+    String id, ten, maPhong;
+    LocalDate den, di;
+    int soNgay;
+    float tien, giam;
+    Phong phong;
+
+    KH(int id, String ten, String maPhong, String den, String di, Phong p) {
+        DateTimeFormatter form = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        this.den = LocalDate.parse(den, form);
+        this.di = LocalDate.parse(di, form);
+        this.id = String.format("KH%02d", id);
+        this.ten = ten;
+        this.maPhong = maPhong;
+        this.soNgay = (int) ChronoUnit.DAYS.between(this.den, this.di);
+        this.phong = p;
+        if (soNgay < 10) {
+            giam = 0;
+        } else if (soNgay < 20) {
+            giam = 0.02f;
+        } else if (soNgay < 30) {
+            giam = 0.04f;
+        } else {
+            giam = 0.06f;
+        }
+        if (soNgay == 0) {
+            this.tien = (1 * this.phong.gia);
+        } else {
+            this.tien = soNgay * this.phong.gia;
+        }
+        this.tien += (this.tien * this.phong.phi);
+        this.tien *= (1 - giam);
+
+    }
+
+    public String toString() {
+        return id + " " + ten + " " + maPhong + " " + soNgay + " " + String.format("%.2f", tien);
+    }
+
+    public int compareTo(KH o) {
+        return Integer.compare(o.soNgay, soNgay);
+    }
+
+}
+
+public class solve {
+
+    public static int tc;
+
+    public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException {
+        Scanner sc = new Scanner(new File("DATA.in"));
+        //Scanner sc = new Scanner(new File("D:\\btap\\src\\lam\\text"));
+        tc = Integer.parseInt(sc.nextLine());
+        Map<String, Phong> m1 = new HashMap<>();
+        while (tc-- > 0) {
+            String[] line = sc.nextLine().split("\\s+");
+            String ma = line[0];
+            Phong push = new Phong(line[0], line[1], Integer.parseInt(line[2]), Float.parseFloat(line[3]));
+            m1.put(ma, push);
+        }
+
+        tc = Integer.parseInt(sc.nextLine());
+        ArrayList<KH> ls = new ArrayList<>();
+        for (int i = 1; i <= tc; ++i) {
+            String ten = sc.nextLine();
+            String maPhong = sc.nextLine();
+            String loai = String.valueOf(maPhong.charAt(2));
+            Phong p = m1.get(loai);
+            String den = sc.nextLine();
+            String di = sc.nextLine();
+            ls.add(new KH(i, ten, maPhong, den, di, p));
+        }
+
+        Collections.sort(ls);
+
+        for (KH x : ls) {
+            System.out.println(x);
+        }
+    }
+
+}
