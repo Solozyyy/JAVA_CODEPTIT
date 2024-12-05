@@ -1,0 +1,90 @@
+package lam;
+
+import java.util.*;
+import java.math.BigInteger;
+import java.io.*;
+import java.nio.*;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+
+class SP {
+
+    String id, ten;
+    int gia1, gia2;
+
+    SP(String id, String ten, int gia1, int gia2) {
+        this.id = id;
+        this.ten = ten;
+        this.gia1 = gia1;
+        this.gia2 = gia2;
+    }
+
+}
+
+class HD {
+
+    String ma;
+    int sl;
+    double giam, tong;
+    SP sp;
+
+    HD(int i, String id, int sl, SP sp) {
+        this.ma = String.format(id + "-%03d", i);
+        this.sp = sp;
+        int total = 0;
+        this.sl = sl;
+        if (this.ma.charAt(2) == '1') {
+            total = this.sl * sp.gia1;
+        } else {
+            total = this.sl * sp.gia2;
+        }
+        if (this.sl >= 150) {
+            this.giam = total * 0.5d;
+        } else if (this.sl >= 100) {
+            this.giam = total * 0.3d;
+        } else if (this.sl >= 50){
+            this.giam = total * 0.15d;
+        } else{
+            this.giam = 0;
+        }
+        this.tong = total - this.giam;
+    }
+
+    public String toString() {
+        return ma + " " + sp.ten + " " + (int) giam + " " + (int) tong;
+    }
+
+}
+
+public class solve {
+
+    public static int tc;
+    public static Scanner sc;
+
+    public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException {
+        sc = new Scanner(new File("DATA1.in"));
+        tc = Integer.parseInt(sc.nextLine());
+        Map<String, SP> m1 = new LinkedHashMap<>();
+        while (tc-- > 0) {
+            SP sp = new SP(sc.nextLine(), sc.nextLine(), Integer.parseInt(sc.nextLine()), Integer.parseInt(sc.nextLine()));
+            m1.put(sp.id, sp);
+        }
+        sc = new Scanner(new File("DATA2.in"));
+        ArrayList<HD> ls = new ArrayList<>();
+        tc = Integer.parseInt(sc.nextLine());
+        for (int i = 0; i < tc; ++i) {
+            String[] line = sc.nextLine().split("\\s+");
+            SP sp = m1.get(line[0].substring(0, 2));
+            HD hd = new HD(i + 1, line[0], Integer.parseInt(line[1]), sp);
+            ls.add(hd);
+        }
+        
+        for(HD x : ls){
+            System.out.println(x);
+        }
+    }
+}
