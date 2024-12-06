@@ -1,0 +1,58 @@
+package btapjava;
+
+import java.util.Scanner;
+import static java.lang.Math.*;
+import java.math.BigInteger;
+import java.util.*;
+
+
+public class Btapjava {
+    
+    public static int[] x = new int[16];
+    
+    public static boolean nto(int n){
+        if(n < 2) return false;
+        for(int i = 2; i <= sqrt(n); ++i){
+            if(n % i == 0) return false;
+        }
+        return true;
+    }
+    
+    public static void check(Integer a[]){
+        int tmp = 0;
+        String ans = "";
+        for(int i = 0; i < a.length; ++i){
+            if(x[i] == 1) {
+                tmp += a[i];
+                ans += Integer.toString(a[i]) + " "; 
+            }
+        }
+        
+        if(tmp % 2 != 0) System.out.println(ans);
+    }
+    
+    public static void Try(int i, int n, Integer a[]){
+        for(int j = 0; j <= 1; ++j){
+            x[i] = j;
+            if(i == n - 1){
+                check(a);
+            }
+            else Try(i + 1, n, a);
+        }
+    }
+    
+    public static void main(String[] args) throws Exception {
+        Scanner sc = new Scanner(System.in);
+        int tc = sc.nextInt();
+        for(int t = 0; t < tc; ++t){
+            int n = sc.nextInt();
+            Integer[] a = new Integer[n];
+            for(int i = 0; i < n; ++i){
+                a[i] = sc.nextInt();
+            }
+            Arrays.sort(a, Collections.reverseOrder());
+            Try(0, n, a);
+            System.out.println("");
+        }
+    }
+}
