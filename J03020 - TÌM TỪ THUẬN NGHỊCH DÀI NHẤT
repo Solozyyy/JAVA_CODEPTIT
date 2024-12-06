@@ -1,0 +1,51 @@
+package lam;
+
+import java.util.*;
+import java.math.BigInteger;
+import java.io.*;
+import java.nio.*;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+
+public class solve {
+
+    public static int tc;
+    public static Scanner sc;
+
+    static boolean check(String s){
+        for(int i = 0; i < s.length() / 2; ++i){
+            if(s.charAt(i) != s.charAt(s.length() - i - 1)){
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException {
+
+        sc = new Scanner(System.in);
+        Map<String, Integer> m = new LinkedHashMap<>();
+        int maxx = 0;    
+        while(sc.hasNextLine()){
+            
+            String[] tokens = sc.nextLine().split("\\s+");
+            for(String x: tokens){
+                if(!x.isEmpty()){
+                    if(check(x)){
+                        maxx = Math.max(maxx, x.length());
+                        m.put(x, m.getOrDefault(x, 0) + 1);
+                    }
+                }
+            }
+        }
+        for(Map.Entry<String, Integer> x : m.entrySet()){
+            if(x.getKey().length() == maxx){
+                System.out.println(x.getKey() + " " + x.getValue());
+            }
+        }
+    }
+}
