@@ -1,0 +1,82 @@
+package lam;
+
+import java.util.*;
+import java.math.BigInteger;
+import java.io.*;
+import java.nio.*;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+
+class NT implements Comparable<NT> {
+
+    String ten, dc;
+    LocalTime start, end;
+    long v;
+    StringBuilder id = new StringBuilder();
+
+    static String chuanHoa(String s) {
+        StringBuilder sb = new StringBuilder(s);
+        if (sb.charAt(1) == ':') {
+            sb.insert(0, '0');
+        }
+        if (sb.length() < 5) {
+            sb.insert(3, '0');
+        }
+        return sb.toString();
+    }
+
+    NT(String ten, String dc, String gio) {
+        String[] t1 = ten.split("\\s+");
+        String[] t2 = dc.split("\\s+");
+        for (String x : t2) {
+            if (!x.isEmpty()) {
+                id.append(String.valueOf(Character.toUpperCase(x.charAt(0))));
+            }
+        }
+        for (String x : t1) {
+            if (!x.isEmpty()) {
+                id.append(String.valueOf(Character.toUpperCase(x.charAt(0))));
+            }
+        }
+        this.ten = ten;
+        this.dc = dc;
+        DateTimeFormatter form = DateTimeFormatter.ofPattern("H:mm");
+        this.start = LocalTime.parse("06:00", form);
+        this.end = LocalTime.parse(chuanHoa(gio), form);
+        double h = (double) ChronoUnit.MINUTES.between(start, end) / 60;
+        this.v = Math.round (120.0 / h);
+    }
+
+    public int compareTo(NT o) {
+        return end.compareTo(o.end);
+    }
+
+    public String toString() {
+        return id + " " + ten + " " + dc + " " + v + " Km/h";
+    }
+
+}
+
+public class solve {
+
+    public static int tc;
+    public static Scanner sc;
+
+    public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException {
+
+        sc = new Scanner(System.in);
+        tc = Integer.parseInt(sc.nextLine());
+        ArrayList<NT> ls = new ArrayList<>();
+        while (tc-- > 0) {
+            ls.add(new NT(sc.nextLine(), sc.nextLine(), sc.nextLine()));
+        }
+        Collections.sort(ls);
+        for (NT x : ls) {
+            System.out.println(x);
+        }
+    }
+}
