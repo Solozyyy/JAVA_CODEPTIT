@@ -1,0 +1,98 @@
+package lam;
+
+import java.util.*;
+import java.math.BigInteger;
+import java.io.*;
+import java.nio.*;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+
+
+class MON{
+    String ma, ten, ht;
+    MON(String ma, Scanner sc){
+        this.ma = ma;
+        this.ten = sc.nextLine();
+        this.ht = sc.nextLine();
+    }
+}
+
+class CA{
+    String id, ngay, gio, phong;
+    CA(String id, Scanner sc){
+        this.id = id;
+        this.ngay = sc.nextLine();
+        this.gio = sc.nextLine();
+        this.phong = sc.nextLine();
+    }
+}
+
+class LICH implements Comparable<LICH>{
+    String maca, mamon, manhom, sosv;
+    MON mon;
+    CA ca;
+    LocalDateTime sosanh;
+    
+    LICH(String maca, String mamon, String manhom, String sosv, MON mon, CA ca){
+        this.maca = maca;
+        this.mamon = mamon;
+        this.manhom = manhom;
+        this.sosv = sosv;
+        this.mon = mon;
+        this.ca = ca;
+        String ss = ca.ngay.trim() + " " + ca.gio.trim();
+        DateTimeFormatter form = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        this.sosanh = LocalDateTime.parse(ss, form);
+    }
+    
+    public int compareTo(LICH o){
+        int cmpSS = sosanh.compareTo(o.sosanh);
+        if(cmpSS != 0) return cmpSS;
+        return ca.id.compareTo(o.ca.id);
+    }
+    
+    public String toString(){
+        return ca.ngay + " " + ca.gio + " " + ca.phong + " " + mon.ten + " " + this.manhom + " " + this.sosv;
+    }
+    
+}
+
+public class solve {
+
+    public static int tc;
+    public static Scanner sc;
+
+    public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException {
+        sc = new Scanner(new File("MONTHI.in"));
+        tc = Integer.parseInt(sc.nextLine());
+        Map<String, MON> m1 = new HashMap<>();
+        while(tc-->0){
+            String ma = sc.nextLine();
+            m1.put(ma, new MON(ma, sc));
+        }
+        
+        sc = new Scanner(new File("CATHI.in"));
+        tc = Integer.parseInt(sc.nextLine());
+        Map<String, CA> m2 = new HashMap<>();
+        for(int i = 1; i <= tc; ++i){
+            String ma = String.format("C%03d", i);
+            m2.put(ma, new CA(ma, sc));
+        }
+        
+        sc = new Scanner(new File("LICHTHI.in"));
+        tc = Integer.parseInt(sc.nextLine());
+        ArrayList<LICH> ls = new ArrayList<>();
+        while(tc-->0){
+            String[] s = sc.nextLine().trim().split("\\s+");
+            ls.add(new LICH(s[0], s[1], s[2], s[3], m1.get(s[1]), m2.get(s[0])));
+        }
+        Collections.sort(ls);
+        for(LICH x : ls){
+            System.out.println(x);
+        }
+    }
+}
