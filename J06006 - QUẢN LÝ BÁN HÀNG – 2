@@ -1,0 +1,99 @@
+package lam;
+
+import java.util.*;
+import java.math.BigInteger;
+import java.io.*;
+import java.nio.*;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+
+class KH {
+
+    String id, ten, gt, ns, dc;
+
+    KH(String id, Scanner sc) {
+        this.id = id;
+        this.ten = sc.nextLine();
+        this.gt = sc.nextLine();
+        this.ns = sc.nextLine();
+        this.dc = sc.nextLine();
+    }
+}
+
+class MH {
+
+    String id, ten, dv;
+    int mua, ban;
+
+    MH(String id, Scanner sc) {
+        this.id = id;
+        this.ten = sc.nextLine();
+        this.dv = sc.nextLine();
+        this.mua = Integer.parseInt(sc.nextLine());
+        this.ban = Integer.parseInt(sc.nextLine());
+    }
+}
+
+class HD implements Comparable<HD> {
+
+    String id;
+    int sl, total, prof;
+    KH kh;
+    MH mh;
+
+    HD(String id, int sl, KH kh, MH mh) {
+        this.id = id;
+        this.sl = sl;
+        this.kh = kh;
+        this.mh = mh;
+        this.total = mh.ban * sl;
+        this.prof = total - mh.mua * sl;
+    }
+
+    public int compareTo(HD o) {
+        return Integer.compare(o.prof, prof);
+    }
+
+    public String toString() {
+        return id + " " + kh.ten + " " + kh.dc + " " + mh.ten + " " + sl + " " + total + " " + prof;
+    }
+}
+
+public class solve {
+
+    public static int tc;
+    public static Scanner sc;
+
+    public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException {
+        sc = new Scanner(System.in);
+        tc = Integer.parseInt(sc.nextLine());
+        Map<String, KH> m1 = new HashMap<>();
+        for (int i = 1; i <= tc; ++i) {
+            String id = String.format("KH%03d", i);
+            m1.put(id, new KH(id, sc));
+        }
+
+        tc = Integer.parseInt(sc.nextLine());
+        Map<String, MH> m2 = new HashMap<>();
+        for (int i = 1; i <= tc; ++i) {
+            String id = String.format("MH%03d", i);
+            m2.put(id, new MH(id, sc));
+        }
+
+        ArrayList<HD> ls = new ArrayList<>();
+        tc = Integer.parseInt(sc.nextLine());
+        for (int i = 1; i <= tc; ++i) {
+            String[] line = sc.nextLine().trim().split("\\s+");
+            String id = String.format("HD%03d", i);
+            ls.add(new HD(id, Integer.parseInt(line[2]), m1.get(line[0]), m2.get(line[1])));
+        }
+        Collections.sort(ls);
+        for(HD x : ls){
+            System.out.println(x);
+        }
+    }
+}
