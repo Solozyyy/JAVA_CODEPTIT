@@ -1,0 +1,88 @@
+package lam;
+
+import java.util.*;
+import java.math.BigInteger;
+import java.io.*;
+import java.nio.*;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+
+class SP{
+    String id, ten;
+    int gia1, gia2;
+    
+    SP(String id, String ten, int gia1, int gia2){
+        this.id = id;
+        this.ten = ten;
+        this.gia1 = gia1;
+        this.gia2 = gia2;
+    }
+}
+
+class HD implements Comparable<HD>{
+    String msp;
+    int sl;
+    SP sp;
+    float giam;
+    int tong;
+    
+    HD(String msp, int sl, SP sp){
+        this.msp = msp;
+        this.sl = sl;
+        this.sp = sp;
+        float giam;
+        if(sl >= 150) giam = 0.5f;
+        else if(sl >= 100) giam = 0.3f;
+        else if(sl >= 50) giam = 0.15f;
+        else giam = 0;
+        
+        if(msp.charAt(2) == '1'){
+            this.tong = sl * sp.gia1;
+        }
+        else this.tong = sl * sp.gia2;
+        
+        this.giam = this.tong * giam;
+        tong -= this.giam;
+    }
+    
+    public int compareTo(HD o){
+        return Integer.compare(o.tong, tong);
+    }
+    
+    public String toString(){
+        return msp + " " + sp.ten + " " + String.format("%.0f", giam) + " " + tong;
+    }
+}
+
+public class solve {
+
+    public static int tc;
+    public static Scanner sc;
+
+    public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException {
+        sc = new Scanner(System.in);
+        tc = Integer.parseInt(sc.nextLine());
+        Map<String, SP> m = new HashMap<>();
+        while(tc-->0){
+            String id = sc.nextLine(), ten = sc.nextLine();
+            int gia1 = Integer.parseInt(sc.nextLine()), gia2 = Integer.parseInt(sc.nextLine());
+            m.put(id, new SP(id, ten, gia1, gia2));
+        }
+        tc = Integer.parseInt(sc.nextLine());
+        ArrayList<HD> ls = new ArrayList<>();
+        for(int i = 1; i <= tc; ++i){
+            String[] line = sc.nextLine().split("\\s+");
+            String id = line[0];
+            int sl = Integer.parseInt(line[1]);
+            ls.add(new HD(String.format(id + "-%03d", i), sl, m.get(id.substring(0,2))));
+        }
+        Collections.sort(ls);
+        for(HD x : ls){
+            System.out.println(x);
+        }
+    }
+}
