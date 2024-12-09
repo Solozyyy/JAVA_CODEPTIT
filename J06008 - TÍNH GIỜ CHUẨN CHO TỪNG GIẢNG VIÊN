@@ -1,0 +1,109 @@
+package lam;
+
+import java.util.*;
+import java.math.BigInteger;
+import java.io.*;
+import java.nio.*;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+
+class MON{
+    String id, ten;
+    
+    MON(String id, String ten){
+        this.id = id;
+        this.ten = ten;
+    }
+}
+
+class GV{
+    String id, ten;
+    
+    GV(String id, String ten){
+        this.id = id;
+        this.ten = ten;
+    }
+}
+
+class DS{
+    float gio;
+    GV gv;
+    
+    DS(float gio, GV gv){
+        this.gio = gio;
+        this.gv = gv;
+    }
+    
+    public String toString(){
+        return gv.ten + " " + String.format("%.2f", gio);
+    }
+}
+
+class Pair {
+    String fi;
+    float se;
+    
+    Pair(String fi, float se){
+        this.fi = fi;
+        this.se = se;
+    }
+}
+
+public class solve {
+
+    public static int tc;
+    public static Scanner sc;
+
+    public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException {
+        sc = new Scanner(System.in);
+        tc = Integer.parseInt(sc.nextLine());
+        Map<String, MON> m1 = new HashMap<>();
+        for (int i = 1; i <= tc; ++i) {
+            String[] line = sc.nextLine().trim().split("\\s+");
+            String id = line[0];
+            String ten = "";
+            for(int j = 1; j < line.length; ++j){
+                ten += line[j] + " "; 
+            }
+            m1.put(id, new MON(id, ten.trim()));
+        }
+
+        tc = Integer.parseInt(sc.nextLine());
+        Map<String, GV> m2 = new HashMap<>();
+        for (int i = 1; i <= tc; ++i) {
+            String[] line = sc.nextLine().trim().split("\\s+");
+            String id = line[0];
+            String ten = "";
+            for(int j = 1; j < line.length; ++j){
+                ten += line[j] + " "; 
+            }
+            m2.put(id, new GV(id, ten.trim()));
+        }
+
+        Map<String, ArrayList<Pair>> map = new LinkedHashMap<>();
+        tc = Integer.parseInt(sc.nextLine());
+        for (int i = 1; i <= tc; ++i) {
+            String[] line = sc.nextLine().split("\\s+");
+            Pair p = new Pair(line[1], Float.parseFloat(line[2]));
+            if(!map.containsKey(line[0])) map.put(line[0], new ArrayList<>());
+            map.get(line[0]).add(p);
+        }
+        
+        String q = sc.nextLine();
+        System.out.println("Giang vien: " + m2.get(q).ten);
+        float total = 0f;
+        for(Map.Entry<String, ArrayList<Pair>> x : map.entrySet()){
+            if(x.getKey().equals(q)){
+                for(Pair y : x.getValue()){
+                    System.out.println(m1.get(y.fi).ten + " " + y.se);
+                    total += y.se;
+                }
+            }
+        }
+        System.out.println("Tong: " + String.format("%.2f", total));
+    }
+}
