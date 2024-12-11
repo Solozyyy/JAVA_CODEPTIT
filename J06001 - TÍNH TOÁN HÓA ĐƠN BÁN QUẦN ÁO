@@ -1,0 +1,84 @@
+package lam;
+
+import java.util.*;
+import java.math.BigInteger;
+import java.io.*;
+import java.nio.*;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+
+class MH {
+
+    String id, ten;
+    int gia1, gia2;
+
+    MH(String id, Scanner sc) {
+        this.id = id;
+        this.ten = sc.nextLine();
+        this.gia1 = Integer.parseInt(sc.nextLine());
+        this.gia2 = Integer.parseInt(sc.nextLine());
+    }
+
+}
+
+class HD {
+
+    String id;
+    int sl, tong;
+    float giam;
+    MH mh;
+
+    HD(String i, int sl, MH mh) {
+        this.id = i;
+        this.sl = sl;
+        this.mh = mh;
+        float g;
+        if (sl >= 150) g = 0.5f;
+        else if(sl >= 100) g = 0.3f;
+        else if(sl >= 50) g = 0.15f;
+        else g = 0f;
+        
+        
+        if(id.charAt(2) == '1') this.tong = sl * mh.gia1;
+        else this.tong = sl * mh.gia2;
+        this.giam = this.tong * g;
+        this.tong *= (1 - g);
+    }
+    
+    public String toString(){
+        return id + " " + mh.ten + " " + (int)giam + " " + tong;
+    }
+}
+
+public class solve {
+
+    public static int tc;
+    public static Scanner sc;
+    public static int t;
+
+    public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException {
+        sc = new Scanner(System.in);
+        tc = Integer.parseInt(sc.nextLine());
+
+        Map<String, MH> m = new HashMap<>();
+        while(tc-->0){
+            String i = sc.nextLine();
+            m.put(i, new MH(i, sc));
+        }
+        tc = Integer.parseInt(sc.nextLine());
+        ArrayList<HD> ls = new ArrayList<>();
+        for(int i = 1; i <= tc; ++i){
+            String[] l = sc.nextLine().split("\\s+");
+            String id = String.format(l[0] + "-%03d", i);
+            int sl = Integer.parseInt(l[1]);
+            ls.add(new HD(id, sl, m.get(l[0].substring(0, 2))));
+        }
+        for(HD x : ls){
+            System.out.println(x);
+        }
+    }
+}
