@@ -1,0 +1,75 @@
+package lam;
+
+import java.util.*;
+import java.math.BigInteger;
+import java.io.*;
+import java.nio.*;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+
+class Khach implements Comparable<Khach>{
+    String ten, phong, id;
+    LocalDate nhan, tra;
+    int dvu, total, soNgay, tang, gia;
+    
+    Khach(String id, String ten, String phong, String nhan, String tra, int dvu){
+        DateTimeFormatter form = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        this.id = id;
+        this.ten = ten;
+        this.phong = phong;
+        if(phong.charAt(0) == '1'){
+            this.gia = 25;
+        }
+        else if(phong.charAt(0) == '2'){
+            this.gia = 34;
+        }
+        else if(phong.charAt(0) == '3'){
+            this.gia = 50;
+        }
+        else this.gia = 80;
+        this.nhan = LocalDate.parse(nhan, form);
+        this.tra = LocalDate.parse(tra, form);
+        this.dvu = dvu;
+        this.soNgay = (int) ChronoUnit.DAYS.between(this.nhan, this.tra) + 1;
+        total = (this.soNgay * this.gia) + dvu;
+    }
+    
+    public int compareTo(Khach o){
+        return Integer.compare(o.total, total);
+    }
+    
+    public String toString(){
+        return id + " " + ten + " " + phong + " " + soNgay + " " + total;
+    }
+}
+
+public class solve {
+
+    public static int tc;
+    public static Scanner sc;
+    public static int t;
+
+    public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException {
+        sc = new Scanner(System.in);
+        tc = Integer.parseInt(sc.nextLine());
+        
+        ArrayList<Khach> ls = new ArrayList<>();
+        for(int i = 1; i <= tc; ++i){
+            String id = String.format("KH%02d", i);
+            String ten = sc.nextLine().trim();
+            String phong = sc.nextLine();
+            String den = sc.nextLine().trim();
+            String di = sc.nextLine().trim();
+            int dv = Integer.parseInt(sc.nextLine());
+            ls.add(new Khach(id, ten, phong, den, di, dv));
+        }
+        Collections.sort(ls);
+        for(Khach x : ls){
+            System.out.println(x);
+        }
+    }
+}
