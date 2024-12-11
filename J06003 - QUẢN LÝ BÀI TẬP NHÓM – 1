@@ -1,0 +1,87 @@
+package lam;
+
+import java.util.*;
+import java.math.BigInteger;
+import java.io.*;
+import java.nio.*;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+
+class SV{
+    String id, ten, sdt, nhom;
+    
+    static String chuanHoa(String s){
+        StringBuilder sb = new StringBuilder();
+        for(String x : s.trim().split("\\s+")){
+            sb.append(Character.toUpperCase(x.charAt(0)));
+            sb.append(x.substring(1).toLowerCase() + " ");
+            
+        }
+    return sb.toString().trim();
+    }
+    
+    SV(String id, Scanner sc){
+        this.id = id;
+        this.ten = chuanHoa(sc.nextLine());
+        this.sdt = sc.nextLine();
+        this.nhom = sc.nextLine();
+    }
+    
+    public String toString(){
+        return id + " " + ten + " " + sdt;
+    }
+}
+
+class NHOM{
+    String id, ten;
+    SV sv;
+    
+    NHOM(String id, String ten, SV sv){
+        this.id = id;
+        this.ten = ten;
+        this.sv = sv;
+    }
+    
+    public String toString(){
+        return sv.id + " " + sv.ten + " " + sv.sdt;
+    }
+}
+
+public class solve {
+
+    public static int tc;
+    public static Scanner sc;
+    public static int t;
+    
+    public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException {
+        sc = new Scanner(System.in);
+        String[] tach = sc.nextLine().trim().split("\\s+");
+        tc = Integer.parseInt(tach[0]);
+        t = Integer.parseInt(tach[1]);
+        Map<String, SV> m = new LinkedHashMap<>();
+        while(tc-->0){
+            String id = sc.nextLine();
+            m.put(id, new SV(id, sc));
+        }
+        Map<String, NHOM> m1 = new HashMap<>();
+        for(int i = 1;i <= t; ++i){
+            String ten = sc.nextLine();
+            m1.put(Integer.toString(i), new NHOM(Integer.toString(i), ten, m.get(Integer.toString(i))));
+        }
+        t = Integer.parseInt(sc.nextLine());
+        while(t-->0){
+            String s = sc.nextLine();
+            System.out.println("DANH SACH NHOM " + s + ":");
+            for(Map.Entry<String, SV> e : m.entrySet()){
+                if(e.getValue().nhom.equals(s)){
+                    System.out.println(e.getValue());
+                }
+            }
+            System.out.println("Bai tap dang ky: " + m1.get(s).ten);
+        }
+    }
+}
