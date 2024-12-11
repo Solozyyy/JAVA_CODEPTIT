@@ -1,0 +1,84 @@
+package lam;
+
+import java.util.*;
+import java.math.BigInteger;
+import java.io.*;
+import java.nio.*;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+
+class SV implements Comparable<SV>{
+    String id, ten, sdt, nhom;
+    
+    static String chuanHoa(String s){
+        StringBuilder sb = new StringBuilder();
+        for(String x : s.trim().split("\\s+")){
+            sb.append(Character.toUpperCase(x.charAt(0)));
+            sb.append(x.substring(1).toLowerCase() + " ");
+            
+        }
+    return sb.toString().trim();
+    }
+    
+    SV(String id, Scanner sc){
+        this.id = id;
+        this.ten = chuanHoa(sc.nextLine());
+        this.sdt = sc.nextLine();
+        this.nhom = sc.nextLine();
+    }
+    
+    public int compareTo(SV o){
+        return id.compareTo(o.id);
+    }
+    
+    public String toString(){
+        return id + " " + ten + " " + sdt + " " + nhom;
+    }
+}
+
+class NHOM{
+    String id, ten;
+    SV sv;
+    
+    NHOM(String id, String ten){
+        this.id = id;
+        this.ten = ten;
+        
+    }
+    
+    public String toString(){
+        return sv.id + " " + sv.ten + " " + sv.sdt + " ";
+    }
+}
+
+public class solve {
+
+    public static int tc;
+    public static Scanner sc;
+    public static int t;
+    
+    public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException {
+        sc = new Scanner(System.in);
+        String[] tach = sc.nextLine().trim().split("\\s+");
+        tc = Integer.parseInt(tach[0]);
+        t = Integer.parseInt(tach[1]);
+        ArrayList<SV> sv = new ArrayList<>();
+        while(tc-->0){
+            String id = sc.nextLine();
+            sv.add(new SV(id, sc));
+        }
+        Map<String, NHOM> m1 = new HashMap<>();
+        for(int i = 1;i <= t; ++i){
+            String ten = sc.nextLine();
+            m1.put(Integer.toString(i), new NHOM(Integer.toString(i), ten));
+        }
+        Collections.sort(sv);
+        for(SV x : sv){
+            System.out.println(x + " " + m1.get(x.nhom).ten);
+        }
+    }
+}
