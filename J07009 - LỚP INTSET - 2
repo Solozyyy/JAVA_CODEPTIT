@@ -1,0 +1,71 @@
+package lam;
+
+import java.util.*;
+import java.math.BigInteger;
+import java.io.*;
+import java.nio.*;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+
+class IntSet{
+    TreeSet<Integer> t;
+    
+    IntSet(int[] a){
+        t = new TreeSet<>();
+        for(int x : a){
+            t.add(x);
+        }
+    }
+    
+    public IntSet intersection(IntSet o){
+        TreeSet<Integer> c = new TreeSet<>();
+        for(int x : t){
+            if(o.t.contains(x)){
+                c.add(x);
+            }
+        }
+        int[] a = new int[(int)c.size()];
+        int i = 0;
+        for(int t : c){
+            a[i++] = t;
+        }
+        return new IntSet(a);
+    }
+    
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        for(int x : t){
+            sb.append(x + " ");
+        }
+        return sb.toString();
+    }
+}
+
+public class solve {
+
+    public static void main(String[] args) throws IOException {
+        Scanner sc = new Scanner(new File("DATA.in"));
+        int n = sc.nextInt(), m = sc.nextInt(), a[] = new int[n], b[] = new int[m];
+        for(int i = 0; i<n; i++) a[i] = sc.nextInt();
+        for(int i = 0; i<m; i++) b[i] = sc.nextInt();
+        IntSet s1 = new IntSet(a);
+        IntSet s2 = new IntSet(b);
+        IntSet s3 = s1.intersection(s2);
+        System.out.println(s3);
+    }
+    public static void main3480142(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException {
+        Scanner sc = new Scanner(new File("DATA.in"));
+        int n = sc.nextInt(), m = sc.nextInt(), a[] = new int[n], b[] = new int[m];
+        for(int i = 0; i < n; ++i) a[i] = sc.nextInt();
+        for(int i = 0; i<m; i++) b[i] = sc.nextInt();
+        IntSet s1 = new IntSet(a);
+        IntSet s2 = new IntSet(b);
+        IntSet s3 = s1.intersection(s2);
+        System.out.println(s3);
+    }
+}
+
