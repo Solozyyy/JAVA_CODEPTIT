@@ -1,1 +1,1 @@
-Mấy bài tật thì ném lên đây
+A+ OOP rồi ae ơi
